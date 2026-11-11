@@ -114,3 +114,8 @@ node tests/theme-browser.mjs
 ```
 
 Este teste é complementar à regressão `node tests/browser.mjs` e aos testes unitários `npm test`.
+
+
+### Foto do banner principal
+
+A foto de destaque usa agora o link direto do Unsplash fornecido pela empresa, configurado em `photography.hero`. Ela depende do acesso do navegador a `images.unsplash.com`; as demais fotos continuam locais. `photography.heroFallback` mantém uma foto local de ciclismo como alternativa em caso de falha na conexão.

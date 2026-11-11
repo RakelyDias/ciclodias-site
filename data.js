@@ -15,7 +15,8 @@ export const delivery={message:'Consulte as condições de entrega para sua regi
 
 // Fotografias de contexto (Unsplash). Não são fotos de produtos da Ciclo Dias.
 export const photography = {
-  hero: '/assets/ciclismo-urbano.png',
+  hero: 'https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D',
+  heroFallback: '/assets/ciclismo-urbano.png',
   cycling: '/assets/passeio-bicicleta.png',
   bicycle: '/assets/bicicleta-urbana.png',
   detail: '/assets/detalhe-freio.jpg',

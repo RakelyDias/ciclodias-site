@@ -27,3 +27,8 @@ As fotografias oficiais de cada produto devem ser cadastradas em `products`, no 
 ## Atualização do catálogo e dos temas
 
 As fotografias de pessoas foram retiradas dos cartões de acessórios. Os exemplos de produto e suas novas fotos específicas estão documentados em `catalogo/PHOTO-SOURCES.md`. As fotos anteriores de contexto continuam usadas somente em categorias adequadas ou seções institucionais, sem serem apresentadas como modelos específicos da loja.
+
+
+## Banner principal — link escolhido pela empresa
+
+O destaque utiliza diretamente a foto Unsplash `photo-1541625602330-2277a4c46182`, indicada pela empresa: https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D . A fotografia local `ciclismo-urbano.png` permanece apenas como alternativa de carregamento, com os créditos preservados acima.
