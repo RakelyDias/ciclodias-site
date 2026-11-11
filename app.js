@@ -1,4 +1,4 @@
-import { company, categories, products, demoProducts, tables, delivery } from './data.js';
+import { company, categories, products, demoProducts, tables, delivery, photography, demoImages } from './data.js';
 import {
   filterProducts, productMessage, whatsappUrl, normalizeCart, addCartItem,
   setCartQuantity, removeCartItem, cartCount, cartMessage,
@@ -27,9 +27,7 @@ const icons = {
 };
 const contactButton = (label = 'Falar no WhatsApp', message = 'Olá! Gostaria de saber mais sobre os produtos da Ciclo Dias.', className = 'btn yellow') =>
   `<button type="button" class="${className}" data-contact="${esc(message)}">${icons.whatsapp}${label}</button>`;
-const logo = () => company.logo
-  ? `<img class="official-logo" src="${esc(company.logo)}" alt="Ciclo Dias" width="150" height="78">`
-  : '<span class="logo-pending">Logo oficial<br><small>aguardando arquivo</small></span>';
+const logo = () => `<img class="official-logo" src="${esc(company.logo)}" alt="Ciclo Dias" width="479" height="417">`;
 const countLabel = () => `${cartCount(cart)} ${cartCount(cart) === 1 ? 'item' : 'itens'}`;
 const cartLink = () => `<a class="cart-link" href="#/carrinho" aria-label="Carrinho: ${countLabel()}">${icons.cart}<span>Carrinho</span><span class="cart-count" aria-hidden="true">${cartCount(cart)}</span></a>`;
 const routeLink = (route, label) => `<a href="#${route}"${activeRoute === route ? ' aria-current="page"' : ''}>${label}</a>`;
@@ -68,9 +66,9 @@ const price = product => Number.isFinite(product.price) && product.price >= 0
   : 'Consulte pelo WhatsApp';
 const productUrl = product => `#/produto/${encodeURIComponent(product.id)}`;
 function productImage(product, lazy = true) {
-  return `<div class="product-image">${product.demo ? '<span class="demo-tag">Demonstração</span>' : ''}${product.image
-    ? `<img src="${esc(product.image)}" alt="${esc(product.name)}" ${lazy ? 'loading="lazy"' : ''}>`
-    : '<span class="photo-pending">Foto não cadastrada</span>'}</div>`;
+  const src = product.image || demoImages[product.id] || photography.detail;
+  const illustrative = !product.image || product.demo;
+  return `<div class="product-image${illustrative ? ' illustrative-image' : ''}">${product.demo ? '<span class="demo-tag">Exemplo ilustrativo</span>' : ''}<img src="${esc(src)}" alt="${illustrative ? 'Fotografia de contexto de ciclismo; não representa o produto ou estoque da loja' : esc(product.name)}" ${lazy ? 'loading="lazy"' : ''}>${illustrative ? '<span class="image-caption">Imagem ilustrativa de ciclismo</span>' : ''}</div>`;
 }
 function productCard(product) {
   return `<article class="product-card">
@@ -85,15 +83,20 @@ function productCard(product) {
 }
 const categoryUrl = category => `#/produtos?categoria=${encodeURIComponent(category)}`;
 function home() {
-  const featured = products.slice(0, 4);
-  return `<section class="home-intro"><div class="wrap intro-grid"><div>
-    <p class="section-label">Ciclo Dias · Atacado e varejo</p><h1>Bicicletas, peças<br>e acessórios.</h1>
-    <p>Para sua bicicleta, sua oficina ou sua loja.<br>Encontre o que precisa e peça um orçamento à nossa equipe.</p>
-    <a class="btn yellow" href="#/produtos">Ver produtos <span aria-hidden="true">→</span></a>
-    </div><aside class="intro-service"><h2>Comprando para revender?</h2><p>Solicite a tabela de preços atualizada e consulte as condições para o seu pedido.</p><a href="#/tabelas" class="btn light">Solicitar tabela de preços</a><span>Atendimento direto pelo WhatsApp</span></aside></div></section>
-    <section class="wrap section categories-section"><div class="section-heading"><h2>Encontre por categoria</h2><a class="text-link" href="#/produtos">Ver todos os produtos →</a></div><div class="category-list">${categories.map(category => `<a href="${categoryUrl(category)}">${esc(category)}<span aria-hidden="true">→</span></a>`).join('')}</div><p class="muted small">Consulte os modelos e a disponibilidade com a equipe.</p></section>
-    <section class="wrap section home-products"><div class="section-heading"><h2>Produtos</h2><a class="text-link" href="#/produtos">Ir para o catálogo →</a></div>${featured.length ? `<div class="product-grid">${featured.map(productCard).join('')}</div>` : `<div class="catalog-pending"><div><h3>Consulte os produtos com a Ciclo Dias</h3><p>O catálogo online ainda não foi cadastrado. Informe o nome, a marca ou a medida da peça que você procura.</p></div>${contactButton('Consultar produtos')}</div>`}</section>
-    <section class="wrap section service-grid"><article><h2>Para quem pedala</h2><p>Bicicletas, peças de manutenção e acessórios. Fale com a equipe para encontrar o item adequado à sua bicicleta.</p><a class="text-link" href="#/produtos">Consultar produtos →</a></article><article><h2>Para lojas e oficinas</h2><p>Atendimento a lojistas e profissionais que compram para revenda e manutenção. Consulte a tabela atualizada.</p><a class="text-link" href="#/tabelas">Solicitar tabela →</a></article><article><h2>Entregas</h2><p>${esc(delivery.message)}</p><a class="text-link" href="#/entregas">Ver informações de entrega →</a></article></section>`;
+  const featured = products.length ? products.slice(0, 4) : demoProducts;
+  const photoCategories = [
+    ['Bicicletas', 'Para o seu próximo pedal', photography.bicycle, 'Bicicletas'],
+    ['Peças e componentes', 'Da manutenção à montagem', photography.detail, 'Quadros e garfos'],
+    ['Pneus e rodas', 'Pneus, câmaras, rodas e aros', '/assets/roda-componentes.png', 'Pneus e câmaras'],
+    ['Acessórios', 'Consulte as opções com a equipe', photography.cycling, 'Capacetes e acessórios'],
+  ];
+  return `<section class="photo-hero"><img class="hero-photo" src="${esc(photography.hero)}" alt="Ciclista em bicicleta urbana — fotografia ilustrativa" fetchpriority="high"><div class="hero-shade"></div><div class="wrap hero-content"><p class="section-label">CICLO DIAS · ATACADO E VAREJO</p><h1>Bicicletas, peças<br>e acessórios.</h1><p>Para quem pedala.<br>Para quem faz o ciclismo acontecer.</p><div class="hero-actions"><a class="btn yellow" href="#/produtos">Conhecer os produtos <span aria-hidden="true">→</span></a>${contactButton('Fale com a gente', undefined, 'btn hero-contact')}</div></div><span class="hero-credit">Foto ilustrativa · Unsplash</span></section>
+    <div class="service-bar wrap"><div><strong>Atacado e varejo</strong><span>Para ciclistas, lojas e oficinas</span></div><div><strong>Atendimento direto</strong><span>Tire suas dúvidas pelo WhatsApp</span></div><div><strong>Orçamento sem complicação</strong><span>Escolha os itens e consulte a equipe</span></div></div>
+    <section class="wrap section categories-section"><div class="section-heading"><div><p class="section-label">ENCONTRE O QUE VOCÊ PROCURA</p><h2>Qual é o seu próximo projeto?</h2></div><a class="text-link" href="#/produtos">Ver todas as categorias →</a></div><div class="photo-categories">${photoCategories.map(([name,sub,photo,category]) => `<a href="${categoryUrl(category)}"><img src="${esc(photo)}" alt="${esc(name)} — foto ilustrativa de ciclismo" loading="lazy"><span class="category-caption"><strong>${name}</strong><small>${sub}</small></span><span class="category-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><p class="photo-disclaimer">Fotos ilustrativas. Consulte modelos e disponibilidade com nossa equipe.</p></section>
+    <section class="product-section"><div class="wrap section home-products"><div class="section-heading"><div><p class="section-label">BICICLETAS, PEÇAS E ACESSÓRIOS</p><h2>${products.length ? 'Conheça nossos produtos' : 'Explore as possibilidades'}</h2></div><a class="text-link" href="#/produtos${products.length ? '' : '?modo=demo'}">${products.length ? 'Ver produtos' : 'Ver exemplos'} →</a></div>${!products.length ? '<p class="examples-note">Uma amostra do visual do catálogo. Os itens abaixo são exemplos ilustrativos, sem estoque, marcas ou preços confirmados pela Ciclo Dias.</p>' : ''}<div class="product-grid">${featured.map(productCard).join('')}</div></div></section>
+    <section class="wrap section store-story"><div class="story-photo"><img src="${esc(photography.cycling)}" alt="Pessoa com bicicleta em fotografia ilustrativa" loading="lazy"><span>Foto ilustrativa · Unsplash</span></div><div><p class="section-label">SOBRE A CICLO DIAS</p><h2>O que você precisa.<br>Do nosso lado do balcão.</h2><p>Somos loja e distribuidora de bicicletas, peças e acessórios. Atendemos quem pedala e quem trabalha com bicicletas.</p><p>Na compra para uso próprio, revenda ou manutenção, conte com a nossa equipe para consultar os itens de interesse.</p><a class="text-link" href="#/sobre">Conheça a Ciclo Dias →</a></div></section>
+    <section class="trade-banner"><div class="wrap"><div><h2>Sua loja ou oficina também pedala com a gente.</h2><p>Solicite a tabela atualizada e consulte as condições para o seu pedido.</p></div><a href="#/tabelas" class="btn yellow">Solicitar tabela de preços →</a></div></section>
+    <section class="wrap delivery-teaser"><div><h2>Entrega na sua região</h2><p>${esc(delivery.message)}</p></div><a class="text-link" href="#/entregas">Consultar entregas →</a></section>`;
 }
 
 let catalogState = { query: '', category: '', brand: '', mode: 'real' };
@@ -106,7 +109,7 @@ function catalog(params) {
   const source = catalogState.mode === 'demo' ? demoProducts : products;
   const brands = [...new Set(source.map(product => product.brand).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   const categoryOptions = [...new Set([...categories, ...source.map(product => product.category).filter(Boolean)])];
-  return `<section class="wrap page">${breadcrumbs('Produtos')}<div class="page-heading"><h1>Produtos</h1><p>Busque uma bicicleta, peça ou acessório e adicione ao carrinho para solicitar um orçamento.</p></div>
+  return `<section class="wrap page">${breadcrumbs('Produtos')}<div class="catalog-cover"><img src="${esc(photography.cycling)}" alt="Ciclismo — fotografia ilustrativa" loading="lazy"><span>Fotografia ilustrativa · Unsplash</span></div><div class="page-heading"><h1>Produtos</h1><p>Busque uma bicicleta, peça ou acessório e adicione ao carrinho para solicitar um orçamento.</p></div>
     ${catalogState.mode === 'demo' ? `<div class="notice demo-notice"><strong>Catálogo de demonstração</strong><p>Estes itens são apenas exemplos de navegação. Não representam produtos ou estoque da Ciclo Dias.</p><a href="#/produtos">Voltar ao catálogo oficial</a></div>` : ''}
     <div class="catalog-layout"><form id="filters" class="filters" role="search" aria-label="Filtros de produtos">
     <h2>Filtrar produtos</h2><label for="search">Nome, marca ou código</label><input type="search" id="search" value="${esc(catalogState.query)}" placeholder="O que você procura?" autocomplete="off">
@@ -115,7 +118,7 @@ function catalog(params) {
     <button type="button" class="text-button" data-clear-filters>Limpar filtros</button>
     <p class="small muted">A lista de marcas acompanha os produtos cadastrados.</p></form>
     <div class="catalog-results"><p id="results-count" class="results-count" role="status"></p><div id="results" class="product-grid"></div></div></div>
-    ${demoProducts.length && catalogState.mode === 'real' ? '<details class="demo-access"><summary>Testar a navegação com itens de demonstração</summary><p>O catálogo oficial ainda está vazio. Os exemplos não possuem fotos, marcas ou estoque confirmados.</p><a class="text-link" href="#/produtos?modo=demo">Abrir demonstração →</a></details>' : ''}</section>`;
+    ${demoProducts.length && catalogState.mode === 'real' ? '<details class="demo-access"><summary>Testar a navegação com itens de demonstração</summary><p>O catálogo oficial ainda está vazio. As fotografias são ilustrativas e não representam produtos ou estoque confirmados da loja.</p><a class="text-link" href="#/produtos?modo=demo">Abrir demonstração →</a></details>' : ''}</section>`;
 }
 function updateResults(syncUrl = false) {
   if (!$('#results')) return;
@@ -159,13 +162,13 @@ function cartPage() {
     <aside class="cart-summary"><h2>Solicitar orçamento</h2><div class="summary-row"><span>Produtos diferentes</span><strong>${cart.length}</strong></div><div class="summary-row"><span>Quantidade total</span><strong data-total-quantity>${total} ${total === 1 ? 'unidade' : 'unidades'}</strong></div><p class="summary-price">Valores a confirmar</p><p>Os itens não ficam reservados. A equipe vai confirmar preços, estoque e condições do pedido.</p>${cart.some(item => allProducts.find(product => product.id === item.id)?.demo) ? '<p class="demo-warning">Sua lista contém itens de demonstração. Eles serão identificados na mensagem e não representam estoque real.</p>' : ''}${contactButton('Pedir orçamento no WhatsApp', cartMessage(cart, allProducts), 'btn yellow checkout-button')}<p class="small muted">Você revisa a mensagem no WhatsApp antes de enviá-la. Nenhum pagamento é realizado pelo site.</p></aside></div>`}</section>`;
 }
 function about() {
-  return `<section class="wrap page">${breadcrumbs('Sobre a Ciclo Dias')}<div class="page-heading"><h1>Sobre a Ciclo Dias</h1><p>Loja e distribuidora de bicicletas, peças e acessórios.</p></div><div class="info-layout"><article class="prose"><h2>Atacado e varejo</h2><p>A Ciclo Dias atende consumidores finais, lojistas e profissionais que compram peças para revenda e manutenção.</p><p>Nosso atendimento pelo WhatsApp facilita a consulta de produtos, reposições e tabelas de preços. Fale com a equipe para conhecer os itens disponíveis e as condições do seu pedido.</p><h2>Bicicletas, peças e acessórios</h2><p>Consulte bicicletas, componentes para manutenção e acessórios. Se procura uma peça específica, informe nome, marca, código ou medida para ajudar no atendimento.</p><p class="brand-slogan">${esc(company.slogan)}</p></article><aside class="info-aside"><h2>Como podemos ajudar?</h2><p>Consulte produtos para sua bicicleta, sua loja ou sua oficina.</p>${contactButton()}<a class="text-link" href="#/produtos">Ver produtos →</a></aside></div></section>`;
+  return `<section class="wrap page">${breadcrumbs('Sobre a Ciclo Dias')}<div class="page-heading"><h1>Sobre a Ciclo Dias</h1><p>Loja e distribuidora de bicicletas, peças e acessórios.</p></div><div class="info-layout"><article class="prose"><img class="about-photo" src="${esc(photography.cycling)}" alt="Ciclistas em fotografia ilustrativa" loading="lazy"><p class="photo-disclaimer">Fotografia ilustrativa de ciclismo · Unsplash</p><h2>Atacado e varejo</h2><p>A Ciclo Dias atende consumidores finais, lojistas e profissionais que compram peças para revenda e manutenção.</p><p>Nosso atendimento pelo WhatsApp facilita a consulta de produtos, reposições e tabelas de preços. Fale com a equipe para conhecer os itens disponíveis e as condições do seu pedido.</p><h2>Bicicletas, peças e acessórios</h2><p>Consulte bicicletas, componentes para manutenção e acessórios. Se procura uma peça específica, informe nome, marca, código ou medida para ajudar no atendimento.</p><p class="brand-slogan">${esc(company.slogan)}</p></article><aside class="info-aside"><h2>Como podemos ajudar?</h2><p>Consulte produtos para sua bicicleta, sua loja ou sua oficina.</p>${contactButton()}<a class="text-link" href="#/produtos">Ver produtos →</a></aside></div></section>`;
 }
 function deliveries() {
   return `<section class="wrap page">${breadcrumbs('Entregas')}<div class="page-heading"><h1>Entregas</h1><p>${esc(delivery.message)}</p></div><div class="info-layout"><article class="prose"><h2>Consulte antes de fechar seu pedido</h2><p>A equipe confirma a região atendida, o valor do frete, eventuais valores mínimos e o prazo de entrega para o seu pedido.</p><h2>O que informar no atendimento</h2><ul><li>Sua cidade, bairro e CEP.</li><li>Os produtos e as quantidades de interesse.</li><li>Se a compra é para uso próprio, revenda ou manutenção.</li></ul>${delivery.regions.length ? `<h2>Condições cadastradas</h2><div class="region-list">${delivery.regions.map(region => `<section><h3>${esc(region.name)}</h3>${region.details ? `<p>${esc(region.details)}</p>` : '<p>Consulte as condições com a equipe.</p>'}</section>`).join('')}</div>` : '<p class="muted">As condições atuais ainda não foram publicadas no site. Confirme todos os detalhes no atendimento.</p>'}</article><aside class="info-aside"><h2>Entrega para sua região</h2><p>Envie seu bairro e CEP para consultar as condições.</p>${contactButton('Consultar entrega', 'Olá! Gostaria de consultar as condições de entrega. Minha cidade, bairro e CEP são: ')}</aside></div></section>`;
 }
 function contact() {
-  return `<section class="wrap page">${breadcrumbs('Contato')}<div class="page-heading"><h1>Contato</h1><p>Fale com a Ciclo Dias para consultar produtos, tabela de preços e entregas.</p></div><div class="contact-grid"><section class="contact-primary"><h2>Atendimento pelo WhatsApp</h2><p>Informe o produto, a marca ou o código que você procura. Para vários itens, use o carrinho e envie uma única solicitação de orçamento.</p>${contactButton()}${!whatsappUrl(company.whatsapp, 'Consulta') ? '<p class="muted small">O número oficial ainda não está disponível. Use o e-mail abaixo.</p>' : ''}<a class="text-link" href="#/carrinho">Ir para o carrinho →</a></section><section class="contact-card"><h2>E-mail</h2><a href="mailto:${esc(company.email)}">${esc(company.email)}</a><h2>Redes e canais</h2>${company.instagram ? `<a href="${esc(company.instagram)}" target="_blank" rel="noopener noreferrer">@ciclodiasatacadovarejo</a>` : '<p>Instagram a informar.</p>'}${company.channel ? `<a href="${esc(company.channel)}" target="_blank" rel="noopener noreferrer">Canal do WhatsApp</a>` : '<p class="muted small">Link do canal do WhatsApp a informar.</p>'}</section></div><div class="contact-secondary"><section><h2>Endereço</h2><p>${esc(company.address || 'Endereço a informar.')}</p></section><section><h2>Horário de atendimento</h2><p>${esc(company.hours || 'Horários a informar.')}</p></section></div></section>`;
+  return `<section class="wrap page">${breadcrumbs('Contato')}<div class="page-heading"><h1>Contato</h1><p>Fale com a Ciclo Dias para consultar produtos, tabela de preços e entregas.</p></div><div class="contact-grid"><section class="contact-primary"><h2>Atendimento pelo WhatsApp</h2><p>Informe o produto, a marca ou o código que você procura. Para vários itens, use o carrinho e envie uma única solicitação de orçamento.</p>${contactButton()}${!whatsappUrl(company.whatsapp, 'Consulta') ? '<p class="muted small">O número oficial ainda não está disponível. Use o e-mail abaixo.</p>' : ''}<a class="text-link" href="#/carrinho">Ir para o carrinho →</a></section><section class="contact-card"><h2>E-mail</h2><a href="mailto:${esc(company.email)}">${esc(company.email)}</a><h2>Redes e canais</h2>${company.instagram ? `<a href="${esc(company.instagram)}" target="_blank" rel="noopener noreferrer">@ciclodiasatacadovarejo</a>` : '<p>Instagram a informar.</p>'}${company.channel ? `<a href="${esc(company.channel)}" target="_blank" rel="noopener noreferrer">Canal do WhatsApp</a>` : ''}</section></div>${company.address || company.hours ? `<div class="contact-secondary">${company.address ? `<section><h2>Endereço</h2><p>${esc(company.address)}</p></section>` : ''}${company.hours ? `<section><h2>Horário de atendimento</h2><p>${esc(company.hours)}</p></section>` : ''}</div>` : ''}</section>`;
 }
 function tablePage() {
   return `<section class="wrap page">${breadcrumbs('Tabela de preços')}<div class="page-heading"><h1>Tabela de preços</h1><p>Solicite a versão atualizada para planejar o seu pedido.</p></div><div class="info-layout"><article class="prose"><h2>Consulte nossa equipe</h2><p>As tabelas são compartilhadas em PDF e Excel pelo atendimento. Antes de fechar o pedido, confirme os preços e a disponibilidade dos itens.</p>${contactButton('Solicitar tabela de preços', 'Olá! Gostaria de receber a tabela de preços atualizada da Ciclo Dias.')}</article><aside class="info-aside"><h2>Arquivos para download</h2>${tables.updatedAt ? `<p>Atualizada em ${new Date(tables.updatedAt + 'T12:00:00').toLocaleDateString('pt-BR')}</p>` : ''}${tables.pdf ? `<a class="btn secondary" href="${esc(tables.pdf)}" download>Baixar PDF</a>` : ''}${tables.excel ? `<a class="btn secondary" href="${esc(tables.excel)}" download>Baixar Excel</a>` : ''}${!tables.pdf && !tables.excel ? '<p>Nenhum arquivo cadastrado. Peça a tabela atual pelo WhatsApp.</p>' : ''}</aside></div></section>`;
@@ -320,12 +323,12 @@ document.addEventListener('keydown', event => {
   }
 });
 document.addEventListener('error', event => {
-  if (event.target.matches?.('.product-image img,.official-logo')) {
+  if (event.target.matches?.('img')) {
     const image = event.target;
-    const placeholder = document.createElement('span');
-    placeholder.className = image.classList.contains('official-logo') ? 'logo-pending' : 'photo-pending';
-    placeholder.textContent = image.classList.contains('official-logo') ? 'Logo indisponível' : 'Foto indisponível';
-    image.replaceWith(placeholder);
+    if (!image.dataset.fallback) {
+      image.dataset.fallback = 'true';
+      image.src = image.classList.contains('official-logo') ? '/assets/logo-ciclo-dias.png' : photography.bicycle;
+    }
   }
 }, true);
 $('#dialog').addEventListener('click', event => {

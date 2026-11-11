@@ -31,7 +31,7 @@ Edite `data.js`, que é público. Não coloque senhas ou credenciais neste arqui
 
 `company` reúne e-mail, WhatsApp, Instagram, logo, endereço, horários, canal do WhatsApp, domínio e CNPJ. WhatsApp e Instagram informados já estão cadastrados. O telefone deve conter somente dígitos com país e DDD (55 + DDD + número). Se estiver vazio/inválido, o site oferece e-mail e mensagem copiável, sem gerar link fictício.
 
-**A logo oficial ainda está pendente:** o PDF mencionado não ficou disponível como arquivo no ambiente. Não houve recriação, redesenho nem uso de logo genérica. Cabeçalho e rodapé exibem um espaço neutro identificado. Quando receber o PDF, extraia a imagem original com `pdfimages` ou renderize a página em boa resolução, preserve cores, proporções e inscrições, salve em `assets/` e informe seu caminho em `company.logo`. O mesmo arquivo será usado nos dois locais, com `object-fit: contain`. O servidor já reconhece PNG, JPEG, WebP e AVIF.
+**A logo oficial está aplicada:** `assets/logo-ciclo-dias.png` foi extraída diretamente do PDF fornecido pela empresa, sem redesenho ou alteração de cores, na resolução original de 479 × 417 px. Cabeçalho e rodapé usam o mesmo arquivo, configurado em `company.logo`, com proporções preservadas. O telefone que integra a arte foi preservado; os botões de atendimento usam exclusivamente o WhatsApp configurado em `company.whatsapp`.
 
 ### Produtos e fotos
 
@@ -54,9 +54,9 @@ Estrutura de cadastro — substitua os campos abaixo por dados confirmados:
 }
 ```
 
-Use `price: null` quando o preço não estiver informado: aparece “Consulte pelo WhatsApp”. Nenhum total em dinheiro é calculado no carrinho, pois o orçamento depende de confirmação. Fotos são exibidas inteiras, em área quadrada com `object-fit: contain`. Sem foto ou com arquivo inacessível, aparece uma indicação neutra. As ilustrações SVG antigas não são usadas como fotos nem na página inicial.
+Use `price: null` quando o preço não estiver informado: aparece “Consulte pelo WhatsApp”. Nenhum total em dinheiro é calculado no carrinho, pois o orçamento depende de confirmação. Fotos oficiais de produtos são exibidas inteiras, em área quadrada com `object-fit: contain`. Imagens de contexto aparecem somente como ilustrações identificadas; não representam o modelo ou estoque. As ilustrações SVG antigas não são usadas no site. Todas as fotos utilizadas no redesign estão salvas em `assets/`, sem dependência de links externos. Os créditos, arquivos de origem e licença são documentados em `assets/PHOTO-CREDITS.md` e `assets/PHOTOGRAPHY-LICENSE.txt`.
 
-`demoProducts` mantém os exemplos da versão anterior separados. Eles só aparecem ao escolher **Testar a navegação com itens de demonstração**, no fim da página Produtos, ou acessar `#/produtos?modo=demo`. Não entram na vitrine oficial. A mensagem de orçamento identifica explicitamente qualquer demonstração.
+`demoProducts` mantém os exemplos da versão anterior separados. Na página inicial, há uma seção de exemplos explicitamente identificados, com fotos ilustrativas. Na página Produtos, os exemplos permanecem separados do catálogo oficial e só aparecem ao escolher **Testar a navegação com itens de demonstração**, ou acessar `#/produtos?modo=demo`. Não são apresentados como estoque da loja. A mensagem de orçamento identifica explicitamente qualquer demonstração.
 
 ### Tabelas e entregas
 
@@ -82,10 +82,13 @@ Os testes unitários verificam busca, combinação de filtros, migração, quant
 
 ## Pendências para publicação comercial
 
-- Receber o PDF/arquivo da logo oficial e configurar `company.logo`.
 - Cadastrar fotos, produtos, marcas, códigos, descrições e variações oficiais.
 - Confirmar condições atuais de entrega, frete, valores mínimos e prazos.
 - Completar endereço, horários, canal do WhatsApp, domínio e CNPJ, quando aplicável.
 - Cadastrar preços e tabelas PDF/Excel somente com valores e datas reais.
 
 O site não foi publicado nem enviado ao GitHub nesta atualização.
+
+## Fotografias do redesign
+
+`photography` e `demoImages` em `data.js` centralizam as fotografias locais e os vínculos dos exemplos. As fotos vêm do acervo público BikeX, creditado ao Unsplash e distribuído sob a licença MIT preservada no projeto. A logo pertence à Ciclo Dias e foi extraída do PDF da empresa. Nenhuma marca de outro site foi reutilizada. Os arquivos externos são apenas referências de origem na documentação; a interface usa cópias locais. A liberação de domínios Unsplash chegou a ser proposta no rascunho de rede, mas foi retirada ao adotar as imagens locais; a lista de domínios personalizados voltou ao estado anterior. Não é necessária uma mudança de rede para usar o site.

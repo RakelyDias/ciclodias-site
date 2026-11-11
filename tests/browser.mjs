@@ -40,14 +40,28 @@ async function go(page, route = '/') {
 async function count(page, expected) { equal(await page.locator('.cart-count').innerText(), String(expected), 'cart counter'); }
 async function qty(page, id, expected) { equal(await page.locator(`[data-quantity="${id}"]`).inputValue(), String(expected), `quantity ${id}`); }
 async function noOverflow(page, label) { check(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `horizontal overflow: ${label}`); }
+async function imagesLoaded(page) {
+  const broken = await page.evaluate(async () => {
+    const images = [...document.images];
+    images.forEach(image => image.loading = 'eager');
+    await Promise.all(images.map(image => image.decode().catch(() => {})));
+    return images.filter(image => !image.complete || image.naturalWidth === 0).map(image => image.src);
+  });
+  equal(broken, [], 'all image resources loaded');
+  equal(await page.locator('.logo-pending,.photo-pending').count(), 0, 'no placeholder blocks');
+}
+
 try {
   await mkdir(screenshots, { recursive: true });
   const real = await newContext();
   const page = await real.newPage();
   await go(page);
+  await imagesLoaded(page);
   await page.screenshot({ path: `${screenshots}/inicio-desktop.png`, fullPage: true });
-  equal(await page.locator('.home-products .product-card').count(), 0, 'no demo products in real homepage');
-  check(await page.locator('.catalog-pending').isVisible(), 'real catalog pending notice');
+  equal(await page.locator('.home-products .product-card').count(), 4, 'illustrative homepage examples');
+  equal(await page.locator('.home-products .demo-tag').count(), 4, 'each homepage example explicitly labeled');
+  check(await page.locator('.examples-note').isVisible(), 'homepage distinguishes examples from real stock');
+  equal(await page.locator('.official-logo').count(), 2, 'official logo in header and footer');
   for (const [route, heading] of [
     ['/', 'Bicicletas, peças e acessórios.'], ['/produtos', 'Produtos'], ['/catalogo', 'Produtos'],
     ['/sobre', 'Sobre a Ciclo Dias'], ['/entregas', 'Entregas'], ['/contato', 'Contato'],
@@ -56,6 +70,8 @@ try {
     await go(page, route);
     equal((await page.locator('main h1').innerText()).replace(/\s+/g, ' ').trim(), heading, `route ${route}`);
     await noOverflow(page, `1440 ${route}`);
+    await imagesLoaded(page);
+    if (['/produtos', '/sobre', '/entregas', '/contato'].includes(route)) await page.screenshot({path: `${screenshots}/${route.slice(1)}-desktop.png`, fullPage:true});
   }
   await go(page, '/produtos');
   equal(await page.locator('.product-card').count(), 0, 'real catalog empty');
@@ -105,13 +121,15 @@ try {
   check(checkout.searchParams.get('text').includes('Quantidade: 5'), 'quantity in message');
   check(checkout.searchParams.get('text').includes('DEMO-01'), 'code in message');
   check(checkout.searchParams.get('text').includes('demonstração'), 'demo warning in message');
+  await imagesLoaded(page);
+  await page.waitForTimeout(3600);
   await page.screenshot({ path: `${screenshots}/carrinho-desktop.png`, fullPage: true });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({ path: `${screenshots}/carrinho-celular.png`, fullPage: true });
   for (const width of [390, 320]) {
     await page.setViewportSize({ width, height: 844 });
     for (const route of ['/', '/produtos', '/produtos?modo=demo', '/produto/demo-bicicleta', '/sobre', '/entregas', '/contato', '/carrinho', '/tabelas']) {
-      await go(page, route); await noOverflow(page, `${width} ${route}`);
+      await go(page, route); await noOverflow(page, `${width} ${route}`); await imagesLoaded(page);
       if (width === 390 && route === '/') await page.screenshot({ path: `${screenshots}/inicio-celular.png`, fullPage: true });
     }
   }
