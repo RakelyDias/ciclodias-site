@@ -3,8 +3,15 @@ import assert from 'node:assert/strict';
 import {
   filterProducts, productMessage, listMessage, whatsappUrl,
   normalizeCart, addCartItem, setCartQuantity, removeCartItem, cartCount, cartMessage,
-} from '../logic.js';
-import {demoProducts, products, company} from '../data.js';
+} from '../js/regras.js';
+const company = {whatsapp: '5511959455681', instagram: 'https://www.instagram.com/ciclodiasatacadovarejo/'};
+const products = [];
+const demoProducts = [
+  {id: 'demo-bicicleta', name: 'Bicicleta urbana', category: 'Bicicletas', code: 'DEMO-01', demo: true, price: null},
+  {id: 'demo-capacete', name: 'Capacete para ciclismo', category: 'Capacetes e acessórios', code: 'DEMO-02', demo: true, price: null},
+  {id: 'demo-camara', name: 'Câmara para bicicleta', category: 'Pneus e câmaras', code: 'DEMO-03', demo: true, price: null},
+  {id: 'demo-bolsa', name: 'Bolsa para bicicleta', category: 'Capacetes e acessórios', code: 'DEMO-04', demo: true, price: null},
+];
 
 // Deliberately separate fixtures: no stock, brand or price claims are added to the site.
 const catalog = [

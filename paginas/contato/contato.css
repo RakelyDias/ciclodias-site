@@ -1,0 +1,90 @@
+/* ESTILOS DA PÁGINA: CONTATO. Edite aqui os ajustes específicos desta página. */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 28px;
+}
+
+.contact-primary,
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px;
+}
+
+.contact-primary {
+  border-top: 3px solid var(--yellow);
+}
+
+.contact-primary h2,
+.contact-card h2 {
+  font-size: 22px;
+}
+
+.contact-primary p {
+  color: var(--muted);
+  max-width: 550px;
+  font-size: 13px;
+}
+
+.contact-primary .text-link {
+  display: block;
+  margin-top: 20px;
+}
+
+.contact-primary .small {
+  margin-top: 15px;
+}
+
+.contact-card>a {
+  display: block;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.contact-card h2:not(:first-child) {
+  margin-top: 26px;
+}
+
+.contact-card p {
+  margin-top: 12px;
+}
+
+.contact-secondary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid var(--line);
+}
+
+.contact-secondary h2 {
+  font-size: 19px;
+}
+
+.contact-secondary p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media(max-width:760px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .contact-primary,
+  .contact-card {
+    padding: 23px;
+  }
+  
+  .contact-secondary {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}

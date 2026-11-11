@@ -1,0 +1,144 @@
+/* ESTILOS DA PÁGINA: PRODUTO. Edite aqui os ajustes específicos desta página. */
+
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 45px;
+  align-items: start;
+  margin-bottom: 35px;
+}
+
+.product-detail>.product-image {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.product-detail .product-image img {
+  padding: 45px;
+}
+
+.product-info .section-label {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.product-info h1 {
+  font-size: 30px;
+}
+
+.product-facts {
+  display: grid;
+  gap: 10px;
+  font-size: 12px;
+  margin: 24px 0;
+}
+
+.product-facts>div {
+  display: flex;
+  gap: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.product-facts dt {
+  width: 155px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.product-facts dd {
+  margin: 0;
+}
+
+.detail-price {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+
+.product-add {
+  display: grid;
+  grid-template-columns: 75px 1fr;
+  gap: 9px 12px;
+  margin-top: 25px;
+}
+
+.product-add label {
+  grid-column: 1/-1;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.product-add input {
+  width: 75px;
+  text-align: center;
+}
+
+.product-info>.btn {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.view-cart {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.product-description {
+  max-width: 850px;
+  border-top: 1px solid var(--line);
+  padding-top: 28px;
+}
+
+.product-description h2 {
+  font-size: 22px;
+}
+
+.product-description p,
+.product-description li {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+@media(max-width:1050px) {
+  .product-detail {
+    gap: 30px;
+  }
+}
+
+@media(max-width:760px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
+  .product-detail>.product-image {
+    max-width: 500px;
+    margin-inline: auto;
+  }
+  
+  .product-detail .product-image img {
+    padding: 35px;
+  }
+  
+  .product-info h1 {
+    font-size: 26px;
+  }
+  
+  .product-facts dt {
+    width: 135px;
+  }
+  
+  .product-add {
+    grid-template-columns: 70px 1fr;
+  }
+  
+  .product-add input {
+    width: 70px;
+  }
+  
+  .product-add .btn,
+  .product-info>.btn {
+    font-size: 11px;
+  }
+}

@@ -1,5 +1,6 @@
 // Applied before the stylesheet so saved dark mode does not flash a light page.
 (() => {
+  document.documentElement.classList.remove('no-js');
   const key = 'ciclodias-theme';
   const media = window.matchMedia('(prefers-color-scheme: dark)');
   let choice = null;
@@ -9,7 +10,6 @@
   } catch { /* The theme also works for this session without storage. */ }
   function apply(theme) {
     document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#111715' : '#ffffff');
     window.dispatchEvent(new CustomEvent('ciclo-theme-change', {detail: theme}));
   }
