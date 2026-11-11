@@ -16,7 +16,7 @@ const fixtures = [
   { id: 'test-pneu', name: 'Pneu de teste', brand: 'Marca B (teste)', code: 'TEST-002', category: 'Pneus e câmaras', description: 'Outro produto de teste.', image: '', price: 12.34, variations: [], demo: false },
   { id: 'test-capacete', name: 'Capacete de teste', brand: 'Marca A (teste)', code: 'TEST-003', category: 'Capacetes e acessórios', description: '', image: '', price: null, variations: [], demo: false },
 ];
-const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless: true, args: ['--no-sandbox'] });
+const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless: true, args: ['--no-sandbox', '--disable-gpu'] });
 const errors = [];
 let assertions = 0;
 const check = (value, message) => { assert.ok(value, message); assertions += 1; };

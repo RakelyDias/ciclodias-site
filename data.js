@@ -5,10 +5,10 @@ export const mentionedBrands=['GTA','GIOS','INVIKTUS','VIPER','SUNRUN','ABSOLUT'
 export const products=[];
 // Apenas demonstração de interface. Não representam produtos ou estoque da loja.
 export const demoProducts=[
-{id:'demo-bicicleta',name:'Bicicleta urbana',category:'Bicicletas',brand:'',code:'DEMO-01',kind:'bike',description:'Exemplo de apresentação de bicicleta. As especificações, medidas e cores serão cadastradas com o catálogo oficial.'},
-{id:'demo-capacete',name:'Acessório para ciclismo',category:'Capacetes e acessórios',brand:'',code:'DEMO-02',kind:'helmet',description:'Exemplo de apresentação de acessório. A foto, a marca e as especificações dependem do cadastro oficial.'},
-{id:'demo-pneu',name:'Pneu para bicicleta',category:'Pneus e câmaras',brand:'',code:'DEMO-03',kind:'wheel',description:'Exemplo de apresentação de pneu. Consulte a equipe para conhecer os modelos e medidas disponíveis.'},
-{id:'demo-quadro',name:'Quadro de bicicleta',category:'Quadros e garfos',brand:'',code:'DEMO-04',kind:'frame',description:'Exemplo de apresentação de quadro. Modelo, material, medidas e cores serão informados no cadastro oficial.'}
+{id:'demo-bicicleta',name:'Bicicleta urbana',category:'Bicicletas',brand:'',code:'DEMO-01',description:'Exemplo de apresentação de bicicleta. As especificações, medidas e cores serão cadastradas com o catálogo oficial.'},
+{id:'demo-capacete',name:'Capacete para ciclismo',category:'Capacetes e acessórios',brand:'',code:'DEMO-02',description:'Exemplo de apresentação de acessório. A foto, a marca e as especificações dependem do cadastro oficial.'},
+{id:'demo-camara',name:'Câmara para bicicleta',category:'Pneus e câmaras',brand:'',code:'DEMO-03',description:'Exemplo ilustrativo de câmara de ar. Consulte a equipe para saber quais medidas e tipos de válvula estão disponíveis; a fotografia não confirma produto, marca ou estoque da loja.'},
+{id:'demo-bolsa',name:'Bolsa para bicicleta',category:'Capacetes e acessórios',brand:'',code:'DEMO-04',description:'Exemplo ilustrativo de bolsa para bicicleta. Consulte a equipe sobre opções e compatibilidade. A imagem não representa estoque confirmado ou parceria com a marca fotografada.'}
 ].map(p=>({...p,demo:true,price:null,image:'',variations:[]}));
 export const tables={updatedAt:null,pdf:'',excel:''};
 export const delivery={message:'Consulte as condições de entrega para sua região pelo WhatsApp.',regions:[]};
@@ -21,8 +21,15 @@ export const photography = {
   detail: '/assets/detalhe-freio.jpg',
 };
 export const demoImages = {
-  'demo-bicicleta': photography.bicycle,
-  'demo-capacete': photography.cycling,
-  'demo-pneu': '/assets/roda-componentes.png',
-  'demo-quadro': photography.bicycle,
+  'demo-bicicleta': '/assets/catalogo/bicicleta-urbana.webp',
+  'demo-capacete': '/assets/catalogo/capacete.png',
+  'demo-camara': '/assets/catalogo/camara-bicicleta.webp',
+  'demo-bolsa': '/assets/catalogo/bolsa-bicicleta.webp',
+};
+// Fotografias diferentes para categorias e exemplos de produto.
+export const categoryPhotos = {
+  bikes: '/assets/catalogo/categoria-bicicletas.webp',
+  parts: '/assets/detalhe-freio.jpg',
+  wheels: '/assets/roda-componentes.png',
+  accessories: '/assets/catalogo/categoria-acessorios.webp',
 };

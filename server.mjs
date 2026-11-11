@@ -3,10 +3,11 @@ import { readFile, realpath } from 'node:fs/promises';
 import { resolve, extname, relative, isAbsolute, sep } from 'node:path';
 
 const root = await realpath(process.cwd());
-const publicFiles = new Set(['index.html', 'style.css', 'app.js', 'logic.js', 'data.js']);
+const publicFiles = new Set(['index.html', 'style.css', 'app.js', 'logic.js', 'data.js', 'theme.js']);
 const mime = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml',
+  '.woff2': 'font/woff2', '.ttf': 'font/ttf',
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
   '.webp': 'image/webp', '.avif': 'image/avif', '.ico': 'image/x-icon',
   '.pdf': 'application/pdf', '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

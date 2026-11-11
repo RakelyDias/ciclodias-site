@@ -1,4 +1,4 @@
-import { company, categories, products, demoProducts, tables, delivery, photography, demoImages } from './data.js';
+import { company, categories, products, demoProducts, tables, delivery, photography, demoImages, categoryPhotos } from './data.js';
 import {
   filterProducts, productMessage, whatsappUrl, normalizeCart, addCartItem,
   setCartQuantity, removeCartItem, cartCount, cartMessage,
@@ -32,6 +32,16 @@ const countLabel = () => `${cartCount(cart)} ${cartCount(cart) === 1 ? 'item' : 
 const cartLink = () => `<a class="cart-link" href="#/carrinho" aria-label="Carrinho: ${countLabel()}">${icons.cart}<span>Carrinho</span><span class="cart-count" aria-hidden="true">${cartCount(cart)}</span></a>`;
 const routeLink = (route, label) => `<a href="#${route}"${activeRoute === route ? ' aria-current="page"' : ''}>${label}</a>`;
 
+const themeButton = () => {
+  const dark = window.cicloTheme.get() === 'dark';
+  return `<button class="theme-toggle" type="button" aria-label="Ativar tema ${dark ? 'claro' : 'escuro'}" aria-pressed="${dark}" title="Alternar tema"><svg viewBox="0 0 24 24" aria-hidden="true">${dark ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>' : '<path d="M20 15.5A9 9 0 0 1 8.5 4 9 9 0 1 0 20 15.5Z"/>'}</svg><span>${dark ? 'Escuro' : 'Claro'}</span></button>`;
+};
+function syncThemeButton() {
+  const button = $('.theme-toggle');
+  if (button) { const focus = document.activeElement === button; button.outerHTML = themeButton(); if (focus) $('.theme-toggle').focus({preventScroll:true}); }
+}
+window.addEventListener('ciclo-theme-change', syncThemeButton);
+
 function header() {
   return `<div class="topline"><div class="wrap"><span>Bicicletas, peças e acessórios · Atacado e varejo</span><a href="mailto:${esc(company.email)}">${esc(company.email)}</a></div></div>
     <header class="site-header"><div class="wrap header-main">
@@ -42,6 +52,7 @@ function header() {
         <button type="submit" aria-label="Buscar produtos">${icons.search}</button>
       </form>
       <div class="header-contact"><span>Fale com a nossa equipe</span>${contactButton()}</div>
+      ${themeButton()}
       <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-nav">☰</button>
     </div>
     <div class="nav-bar"><div class="wrap nav-inner"><nav id="main-nav" aria-label="Principal">
@@ -68,14 +79,14 @@ const productUrl = product => `#/produto/${encodeURIComponent(product.id)}`;
 function productImage(product, lazy = true) {
   const src = product.image || demoImages[product.id] || photography.detail;
   const illustrative = !product.image || product.demo;
-  return `<div class="product-image${illustrative ? ' illustrative-image' : ''}">${product.demo ? '<span class="demo-tag">Exemplo ilustrativo</span>' : ''}<img src="${esc(src)}" alt="${illustrative ? 'Fotografia de contexto de ciclismo; não representa o produto ou estoque da loja' : esc(product.name)}" ${lazy ? 'loading="lazy"' : ''}>${illustrative ? '<span class="image-caption">Imagem ilustrativa de ciclismo</span>' : ''}</div>`;
+  return `<div class="product-image${illustrative ? ' illustrative-image' : ''}">${product.demo ? '<span class="demo-tag">Imagem ilustrativa</span>' : ''}<img src="${esc(src)}" alt="${illustrative ? esc(product.name) + ' — imagem ilustrativa, sem confirmação de estoque' : esc(product.name)}" ${lazy ? 'loading="lazy"' : ''}>${illustrative && !product.demo ? '<span class="image-caption">Imagem ilustrativa</span>' : ''}</div>`;
 }
 function productCard(product) {
   return `<article class="product-card">
     <a href="${productUrl(product)}" aria-label="Ver ${esc(product.name)}">${productImage(product)}</a>
     <div class="product-card-content"><p class="product-category">${esc(product.category)}</p>
       <h3><a href="${productUrl(product)}">${esc(product.name)}</a></h3>
-      <p class="product-reference">${product.brand ? esc(product.brand) + ' · ' : ''}${product.code ? `Cód. ${esc(product.code)}` : 'Código a informar'}</p>
+      <p class="product-reference">${product.demo ? 'Exemplo de catálogo · sem estoque confirmado' : `${product.brand ? esc(product.brand) + ' · ' : ''}${product.code ? `Cód. ${esc(product.code)}` : 'Consulte as especificações'}`}</p>
       <p class="product-price">${price(product)}</p>
       <button type="button" class="btn yellow add-button" data-add="${esc(product.id)}">Adicionar ao carrinho</button>
       ${contactButton('Consultar produto', productMessage(product), 'product-consult')}
@@ -85,16 +96,16 @@ const categoryUrl = category => `#/produtos?categoria=${encodeURIComponent(categ
 function home() {
   const featured = products.length ? products.slice(0, 4) : demoProducts;
   const photoCategories = [
-    ['Bicicletas', 'Para o seu próximo pedal', photography.bicycle, 'Bicicletas'],
-    ['Peças e componentes', 'Da manutenção à montagem', photography.detail, 'Quadros e garfos'],
-    ['Pneus e rodas', 'Pneus, câmaras, rodas e aros', '/assets/roda-componentes.png', 'Pneus e câmaras'],
-    ['Acessórios', 'Consulte as opções com a equipe', photography.cycling, 'Capacetes e acessórios'],
+    ['Bicicletas', 'Para o seu próximo pedal', categoryPhotos.bikes, 'Bicicletas'],
+    ['Peças e componentes', 'Da manutenção à montagem', categoryPhotos.parts, 'Freios e componentes'],
+    ['Pneus e rodas', 'Pneus, câmaras, rodas e aros', categoryPhotos.wheels, 'Pneus e câmaras'],
+    ['Acessórios', 'Consulte as opções com a equipe', categoryPhotos.accessories, 'Capacetes e acessórios'],
   ];
   return `<section class="photo-hero"><img class="hero-photo" src="${esc(photography.hero)}" alt="Ciclista em bicicleta urbana — fotografia ilustrativa" fetchpriority="high"><div class="hero-shade"></div><div class="wrap hero-content"><p class="section-label">CICLO DIAS · ATACADO E VAREJO</p><h1>Bicicletas, peças<br>e acessórios.</h1><p>Para quem pedala.<br>Para quem faz o ciclismo acontecer.</p><div class="hero-actions"><a class="btn yellow" href="#/produtos">Conhecer os produtos <span aria-hidden="true">→</span></a>${contactButton('Fale com a gente', undefined, 'btn hero-contact')}</div></div><span class="hero-credit">Foto ilustrativa · Unsplash</span></section>
     <div class="service-bar wrap"><div><strong>Atacado e varejo</strong><span>Para ciclistas, lojas e oficinas</span></div><div><strong>Atendimento direto</strong><span>Tire suas dúvidas pelo WhatsApp</span></div><div><strong>Orçamento sem complicação</strong><span>Escolha os itens e consulte a equipe</span></div></div>
     <section class="wrap section categories-section"><div class="section-heading"><div><p class="section-label">ENCONTRE O QUE VOCÊ PROCURA</p><h2>Qual é o seu próximo projeto?</h2></div><a class="text-link" href="#/produtos">Ver todas as categorias →</a></div><div class="photo-categories">${photoCategories.map(([name,sub,photo,category]) => `<a href="${categoryUrl(category)}"><img src="${esc(photo)}" alt="${esc(name)} — foto ilustrativa de ciclismo" loading="lazy"><span class="category-caption"><strong>${name}</strong><small>${sub}</small></span><span class="category-arrow" aria-hidden="true">↗</span></a>`).join('')}</div><p class="photo-disclaimer">Fotos ilustrativas. Consulte modelos e disponibilidade com nossa equipe.</p></section>
     <section class="product-section"><div class="wrap section home-products"><div class="section-heading"><div><p class="section-label">BICICLETAS, PEÇAS E ACESSÓRIOS</p><h2>${products.length ? 'Conheça nossos produtos' : 'Explore as possibilidades'}</h2></div><a class="text-link" href="#/produtos${products.length ? '' : '?modo=demo'}">${products.length ? 'Ver produtos' : 'Ver exemplos'} →</a></div>${!products.length ? '<p class="examples-note">Uma amostra do visual do catálogo. Os itens abaixo são exemplos ilustrativos, sem estoque, marcas ou preços confirmados pela Ciclo Dias.</p>' : ''}<div class="product-grid">${featured.map(productCard).join('')}</div></div></section>
-    <section class="wrap section store-story"><div class="story-photo"><img src="${esc(photography.cycling)}" alt="Pessoa com bicicleta em fotografia ilustrativa" loading="lazy"><span>Foto ilustrativa · Unsplash</span></div><div><p class="section-label">SOBRE A CICLO DIAS</p><h2>O que você precisa.<br>Do nosso lado do balcão.</h2><p>Somos loja e distribuidora de bicicletas, peças e acessórios. Atendemos quem pedala e quem trabalha com bicicletas.</p><p>Na compra para uso próprio, revenda ou manutenção, conte com a nossa equipe para consultar os itens de interesse.</p><a class="text-link" href="#/sobre">Conheça a Ciclo Dias →</a></div></section>
+    <section class="wrap section store-story"><div class="story-photo"><img src="${esc(photography.cycling)}" alt="Pessoa com bicicleta em fotografia ilustrativa" loading="lazy"><span>Foto ilustrativa · Unsplash</span></div><div><p class="section-label">SOBRE A CICLO DIAS</p><h2>Bicicletas e peças.<br>Atendimento de perto.</h2><p>Somos loja e distribuidora de bicicletas, peças e acessórios. Atendemos quem pedala e quem trabalha com bicicletas.</p><p>Na compra para uso próprio, revenda ou manutenção, conte com a nossa equipe para consultar os itens de interesse.</p><a class="text-link" href="#/sobre">Conheça a Ciclo Dias →</a></div></section>
     <section class="trade-banner"><div class="wrap"><div><h2>Sua loja ou oficina também pedala com a gente.</h2><p>Solicite a tabela atualizada e consulte as condições para o seu pedido.</p></div><a href="#/tabelas" class="btn yellow">Solicitar tabela de preços →</a></div></section>
     <section class="wrap delivery-teaser"><div><h2>Entrega na sua região</h2><p>${esc(delivery.message)}</p></div><a class="text-link" href="#/entregas">Consultar entregas →</a></section>`;
 }
@@ -278,6 +289,7 @@ document.addEventListener('change', event => {
 document.addEventListener('click', async event => {
   const element = event.target.closest('button,a');
   if (!element) return;
+  if (element.matches('.theme-toggle')) window.cicloTheme.toggle();
   if (element.matches('[data-contact]')) contactAction(element.dataset.contact);
   if (element.matches('[data-add]')) {
     const quantity = element.hasAttribute('data-detail-add') ? Number($('#product-quantity').value) : 1;

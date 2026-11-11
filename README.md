@@ -92,3 +92,25 @@ O site não foi publicado nem enviado ao GitHub nesta atualização.
 ## Fotografias do redesign
 
 `photography` e `demoImages` em `data.js` centralizam as fotografias locais e os vínculos dos exemplos. As fotos vêm do acervo público BikeX, creditado ao Unsplash e distribuído sob a licença MIT preservada no projeto. A logo pertence à Ciclo Dias e foi extraída do PDF da empresa. Nenhuma marca de outro site foi reutilizada. Os arquivos externos são apenas referências de origem na documentação; a interface usa cópias locais. A liberação de domínios Unsplash chegou a ser proposta no rascunho de rede, mas foi retirada ao adotar as imagens locais; a lista de domínios personalizados voltou ao estado anterior. Não é necessária uma mudança de rede para usar o site.
+
+## Tema claro e escuro
+
+O botão no cabeçalho alterna entre os dois temas. `theme.js` é carregado antes do CSS para aplicar a escolha sem uma tela clara intermediária. Na primeira visita, segue a preferência do sistema; após a escolha manual, usa `localStorage` na chave `ciclodias-theme`. A preferência acompanha navegação, recarga e retorno ao site, no mesmo navegador e origem. Sem permissão de armazenamento, a troca continua funcionando na sessão. As abas sincronizam a escolha.
+
+A fonte Manrope é servida localmente em `assets/fonts/manrope.ttf`, com a licença SIL OFL preservada no mesmo diretório. Cores, superfícies e contraste dos temas são centralizados nas variáveis do início de `style.css`. Fotos e logo conservam suas cores originais nos dois temas.
+
+A hospedagem estática deve incluir também `theme.js` e os novos diretórios de `assets/`. Não é necessária instalação adicional para rodar o site.
+
+## Novos exemplos fotográficos
+
+Os exemplos da interface foram atualizados para bicicleta, capacete, câmara e bolsa. Todos têm fotos correspondentes ao objeto, com `object-fit: contain`. Nenhum item foi inserido no catálogo real. Os exemplos antigos de pneu e quadro sem fotografia adequada foram retirados; seus identificadores não foram reaproveitados para outros produtos. Listas antigas deixam de mostrar esses exemplos removidos, em vez de trocá-los silenciosamente por outro objeto. As categorias originais, inclusive Quadros e garfos, permanecem nos filtros.
+
+`demoImages` e `categoryPhotos` em `data.js` mantêm as fotos de produtos e categorias separadas. Os créditos, fontes e licenças dos novos arquivos estão em `assets/catalogo/PHOTO-SOURCES.md`. As oito fotos dos cartões da página inicial são diferentes. Os códigos de demonstração aparecem apenas identificados como tal no detalhe/mensagem, sem serem apresentados como códigos comerciais nos cartões.
+
+Para conferir temas, fotos, contraste e preferência salva com Playwright/Chromium instalados e o servidor funcionando:
+
+```sh
+node tests/theme-browser.mjs
+```
+
+Este teste é complementar à regressão `node tests/browser.mjs` e aos testes unitários `npm test`.

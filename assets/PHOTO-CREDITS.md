@@ -23,3 +23,7 @@ Mapeamento dos arquivos copiados sem alterações:
 São imagens de contexto de ciclismo, usadas para demonstração visual. Não são fotografias do estoque ou da loja Ciclo Dias. Nomes dos fotógrafos e links individuais não foram informados pelo acervo; nenhuma autoria individual foi inventada. Os créditos de origem e a licença são mantidos aqui. Nenhum logotipo, marca ou identidade visual do projeto BikeX foi reutilizado.
 
 As fotografias oficiais de cada produto devem ser cadastradas em `products`, no arquivo `data.js`. As imagens ilustrativas não constituem anúncios de disponibilidade, parceria, desconto ou preço.
+
+## Atualização do catálogo e dos temas
+
+As fotografias de pessoas foram retiradas dos cartões de acessórios. Os exemplos de produto e suas novas fotos específicas estão documentados em `catalogo/PHOTO-SOURCES.md`. As fotos anteriores de contexto continuam usadas somente em categorias adequadas ou seções institucionais, sem serem apresentadas como modelos específicos da loja.
