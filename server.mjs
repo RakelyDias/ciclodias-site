@@ -65,11 +65,12 @@ http.createServer(async (req, res) => {
       'Content-Type': mime[extname(path).toLowerCase()] || 'application/octet-stream',
       'Content-Length': content.length,
       'X-Content-Type-Options': 'nosniff',
+      'Cache-Control': 'no-cache',
     });
     res.end(req.method === 'HEAD' ? undefined : content);
   } catch {
     const content = await readFile(resolve(root, 'paginas/erro/404.html'));
-    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
     res.end(req.method === 'HEAD' ? undefined : content);
   }
 }).listen(Number(process.env.PORT) || 3000, '0.0.0.0', () => {

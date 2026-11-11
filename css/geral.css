@@ -282,13 +282,24 @@ textarea::placeholder {
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
+/* A marca é um PNG transparente: não aplicar uma placa atrás do losango. */
 .official-logo {
   display: block;
   width: 82px;
   height: 82px;
   object-fit: contain;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
 .header-search {
