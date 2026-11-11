@@ -286,12 +286,9 @@ textarea::placeholder {
 
 .official-logo {
   display: block;
-  width: 100px;
+  width: 82px;
   height: 82px;
   object-fit: contain;
-  background: white;
-  border-radius: 8px;
-  padding: 4px;
 }
 
 .header-search {
@@ -684,9 +681,8 @@ textarea::placeholder {
 }
 
 .footer-company .official-logo {
-  width: 110px;
+  width: 95px;
   height: 95px;
-  border: 1px solid #e6e8e6;
 }
 
 .footer-company p {
@@ -865,7 +861,7 @@ dialog textarea {
   }
   
   .official-logo {
-    width: 85px;
+    width: 71px;
     height: 71px;
   }
   
@@ -1069,7 +1065,7 @@ dialog textarea {
   }
   
   .footer-company .official-logo {
-    width: 95px;
+    width: 83px;
     height: 83px;
   }
   

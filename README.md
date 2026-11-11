@@ -73,7 +73,7 @@ Exemplo de foto local:
 
 Você também pode colocar um link completo de imagem dentro de `src="https://..."`. O banner inicial já usa o link do Unsplash escolhido pela empresa. Seu `data-fallback` aponta para a alternativa local, caso a foto externa não carregue.
 
-Para adicionar um arquivo, salve-o em `assets/` e use `../../assets/NOME-DO-ARQUIVO.jpg` nas páginas. Os nomes atuais identificam o conteúdo, como `capacete.png`, `camara-bicicleta.webp` e `logo-ciclo-dias.png`.
+Para adicionar um arquivo, salve-o em `assets/` e use `../../assets/NOME-DO-ARQUIVO.jpg` nas páginas. Os nomes atuais identificam o conteúdo, como `capacete.png`, `camara-bicicleta.webp` e `logo-ciclo-dias-transparente.png`.
 
 **A mesma foto pode ser usada em mais de uma página.** Se quiser trocar em todo o site, use **Ctrl + Shift + H** no VS Code para substituir o caminho do arquivo em todos os HTMLs. Cada página conserva o seu conteúdo diretamente, sem um processo que sobrescreva suas edições.
 
@@ -84,7 +84,7 @@ Para adicionar um arquivo, salve-o em `assets/` e use `../../assets/NOME-DO-ARQU
 - **Espaçamento ou layout de uma página:** edite o CSS ao lado desse HTML.
 - **Cores, temas, fonte, cabeçalho e rodapé compartilhados:** edite `css/geral.css`.
 - **Links e textos do cabeçalho/rodapé:** estão completos em cada HTML. Para uma alteração global, use a busca/substituição em todos os arquivos.
-- **Logo:** o arquivo oficial extraído do PDF é `assets/logo-ciclo-dias.png`; as referências estão nos HTMLs.
+- **Logo:** a versão sem fundo é `assets/logo-ciclo-dias-transparente.png`; as referências estão nos HTMLs. O arquivo original extraído do PDF continua preservado em `assets/logo-ciclo-dias.png`.
 
 Os atributos `data-*` identificam elementos usados pela busca e pelo carrinho. Você pode editar os textos e `src` normalmente, mas preserve esses identificadores ao alterar um cartão existente.
 

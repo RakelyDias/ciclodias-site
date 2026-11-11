@@ -2,7 +2,9 @@
 
 ## Logo oficial
 
-`logo-ciclo-dias.png`: imagem original extraída, sem redesenho nem alteração de cores, de `Foto_Ciclo_Dias.pdf`, fornecido pela empresa. Resolução original: 479 × 417 px. Cabeçalho e rodapé usam esse mesmo arquivo com as proporções preservadas.
+`logo-ciclo-dias.png`: imagem original extraída, sem redesenho nem alteração de cores, de `Foto_Ciclo_Dias.pdf`, fornecido pela empresa. Resolução original: 479 × 417 px. Arquivo preservado como referência original.
+
+`logo-ciclo-dias-transparente.png`: versão preparada a partir da imagem da marca enviada pela empresa no chat, com transparência fora do losango. Usada no cabeçalho e no rodapé de todas as páginas, com proporções preservadas.
 
 ## Fotografias ilustrativas
 
